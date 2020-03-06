@@ -2882,6 +2882,9 @@ skills["MoltenShell"] = {
 		["base_physical_damage_reduction_rating"] = {
 			mod("Armour", "BASE", nil, 0, 0, { type = "GlobalEffect", effectType = "Buff" }),
 		},
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
 	},
 	baseFlags = {
 		spell = true,
@@ -2961,6 +2964,9 @@ skills["VaalMoltenShell"] = {
 	statMap = {
 		["base_physical_damage_reduction_rating"] = {
 			mod("Armour", "BASE", nil, 0, 0, { type = "GlobalEffect", effectType = "Buff" }),
+		},
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
 		},
 	},
 	baseFlags = {

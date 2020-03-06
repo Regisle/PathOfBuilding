@@ -1829,6 +1829,9 @@ skills["Discharge"] = {
 		["discharge_triggered_damage_+%_final"] = {
 			mod("Damage", "MORE", nil, ModFlag.Spell, 0, { type = "Condition", var = "SkillIsTriggered" }),
 		},
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
 	},
 	baseFlags = {
 		spell = true,
@@ -2560,6 +2563,11 @@ skills["Firestorm"] = {
 	skillTypes = { [SkillType.Spell] = true, [SkillType.Hit] = true, [SkillType.Area] = true, [SkillType.Duration] = true, [SkillType.SkillCanTrap] = true, [SkillType.SkillCanTotem] = true, [SkillType.SkillCanMine] = true, [SkillType.SpellCanRepeat] = true, [SkillType.Triggerable] = true, [SkillType.FireSkill] = true, [SkillType.SpellCanCascade] = true, [SkillType.CanRapidFire] = true, [SkillType.AreaSpell] = true, },
 	statDescriptionScope = "skill_stat_descriptions",
 	castTime = 0.75,
+	statMap = {
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
+	},
 	baseFlags = {
 		spell = true,
 		area = true,
@@ -3644,6 +3652,9 @@ skills["HeraldOfThunder"] = {
 		["attack_maximum_added_lightning_damage"] = {
 			mod("LightningMax", "BASE", nil, 0, KeywordFlag.Attack, { type = "GlobalEffect", effectType = "Buff" }),
 		},
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
 	},
 	baseFlags = {
 		cast = true,
@@ -4541,6 +4552,11 @@ skills["LightningWarp"] = {
 	skillTypes = { [SkillType.Spell] = true, [SkillType.Hit] = true, [SkillType.Area] = true, [SkillType.Duration] = true, [SkillType.SkillCanTrap] = true, [SkillType.SkillCanTotem] = true, [SkillType.SkillCanMine] = true, [SkillType.Triggerable] = true, [SkillType.MovementSkill] = true, [SkillType.LightningSkill] = true, [SkillType.AreaSpell] = true, [SkillType.TravelSkill] = true, [SkillType.SpellCanRepeat] = true, [SkillType.CanRapidFire] = true, },
 	statDescriptionScope = "variable_duration_skill_stat_descriptions",
 	castTime = 0.8,
+	statMap = {
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
+	},
 	baseFlags = {
 		spell = true,
 		area = true,
@@ -4613,6 +4629,11 @@ skills["VaalLightningWarpInstant"] = {
 	skillTypes = { [SkillType.Spell] = true, [SkillType.Hit] = true, [SkillType.Area] = true, [SkillType.Duration] = true, [SkillType.SkillCanTrap] = true, [SkillType.SkillCanTotem] = true, [SkillType.SkillCanMine] = true, [SkillType.Vaal] = true, [SkillType.LightningSkill] = true, [SkillType.AreaSpell] = true, },
 	statDescriptionScope = "variable_duration_skill_stat_descriptions",
 	castTime = 1,
+	statMap = {
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
+	},
 	baseFlags = {
 		spell = true,
 		area = true,
@@ -7402,6 +7423,9 @@ skills["TempestShield"] = {
 		["shield_spell_block_%"] = {
 			mod("SpellBlockChance", "BASE", nil, 0, 0, { type = "GlobalEffect", effectType = "Buff" }),
 		},
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
 	},
 	baseFlags = {
 		spell = true,
@@ -7476,6 +7500,11 @@ skills["FrostBoltNova"] = {
 	skillTypes = { [SkillType.Spell] = true, [SkillType.Hit] = true, [SkillType.Area] = true, [SkillType.SkillCanTrap] = true, [SkillType.SkillCanTotem] = true, [SkillType.SkillCanMine] = true, [SkillType.SpellCanRepeat] = true, [SkillType.ColdSkill] = true, [SkillType.Triggerable] = true, [SkillType.Duration] = true, [SkillType.ChillingArea] = true, [SkillType.AreaSpell] = true, [SkillType.Instant] = true, [SkillType.NovaSpell] = true, },
 	statDescriptionScope = "skill_stat_descriptions",
 	castTime = 0,
+	statMap = {
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
+	},
 	baseFlags = {
 		spell = true,
 		area = true,

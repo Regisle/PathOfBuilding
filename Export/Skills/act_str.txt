@@ -436,6 +436,9 @@ local skills, mod, flag, skill = ...
 		["base_physical_damage_reduction_rating"] = {
 			mod("Armour", "BASE", nil, 0, 0, { type = "GlobalEffect", effectType = "Buff" }),
 		},
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
 	},
 #baseMod skill("radius", 15)
 #mods
@@ -445,6 +448,9 @@ local skills, mod, flag, skill = ...
 	statMap = {
 		["base_physical_damage_reduction_rating"] = {
 			mod("Armour", "BASE", nil, 0, 0, { type = "GlobalEffect", effectType = "Buff" }),
+		},
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
 		},
 	},
 #mods

@@ -351,6 +351,9 @@ skills["BearTrap"] = {
 		["bear_trap_damage_taken_+%_from_traps_and_mines"] = {
 			mod("TrapMineDamageTaken", "INC", nil, 0, 0, { type = "GlobalEffect", effectType = "Debuff" }),
 		},
+		["trap_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
 	},
 	baseFlags = {
 		cast = true,
@@ -3751,6 +3754,9 @@ skills["HeraldOfIce"] = {
 		},
 		["attack_maximum_added_cold_damage"] = {
 			mod("ColdMax", "BASE", nil, 0, KeywordFlag.Attack, { type = "GlobalEffect", effectType = "Buff" }),
+		},
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
 		},
 	},
 	baseFlags = {

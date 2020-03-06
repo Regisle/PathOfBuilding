@@ -320,6 +320,9 @@ local skills, mod, flag, skill = ...
 		["discharge_triggered_damage_+%_final"] = {
 			mod("Damage", "MORE", nil, ModFlag.Spell, 0, { type = "Condition", var = "SkillIsTriggered" }),
 		},
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
 	},
 #baseMod skill("radius", 30)
 #mods
@@ -451,6 +454,11 @@ local skills, mod, flag, skill = ...
 
 #skill Firestorm
 #flags spell area duration
+	statMap = {
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
+	},
 #baseMod skill("radius", 25)
 #baseMod skill("radiusLabel", "Area in which fireballs fall:")
 #baseMod skill("radiusSecondary", 10)
@@ -619,6 +627,9 @@ local skills, mod, flag, skill = ...
 		["attack_maximum_added_lightning_damage"] = {
 			mod("LightningMax", "BASE", nil, 0, KeywordFlag.Attack, { type = "GlobalEffect", effectType = "Buff" }),
 		},
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
 	},
 #baseMod skill("radius", 32)
 #mods
@@ -746,10 +757,20 @@ local skills, mod, flag, skill = ...
 
 #skill LightningWarp
 #flags spell area duration
+	statMap = {
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
+	},
 #baseMod skill("radius", 16)
 #mods
 
 #skill VaalLightningWarpInstant
+	statMap = {
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
+	},
 #flags spell area duration
 #mods
 
@@ -1190,11 +1211,19 @@ local skills, mod, flag, skill = ...
 		["shield_spell_block_%"] = {
 			mod("SpellBlockChance", "BASE", nil, 0, 0, { type = "GlobalEffect", effectType = "Buff" }),
 		},
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
 	},
 #mods
 
 #skill FrostBoltNova
 #flags spell area duration forceInstant
+	statMap = {
+		["skill_override_pvp_scaling_time_ms"] = {
+			mod("SkillTvalueOverride", "BASE", nil),
+		},
+	},
 #baseMod skill("dotIsArea", true)
 #baseMod skill("radius", 20)
 #mods

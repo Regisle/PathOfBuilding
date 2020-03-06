@@ -1333,13 +1333,6 @@ function calcs.offence(env, actor, activeSkill)
 		-- Calculate PvP values
 		
 		--setup flags
-		skillFlags.isPvP = false
-		skillFlags.notAttackPvP = false
-		skillFlags.weapon1AttackPvP = false
-		skillFlags.weapon2AttackPvP = false
-		skillFlags.attackPvP = false
-		skillFlags.notAveragePvP = false
-		
 		if env.configInput.PvpScaling then
 			skillFlags.isPvP = true
 			if skillFlags.attack then
@@ -1360,7 +1353,9 @@ function calcs.offence(env, actor, activeSkill)
 			if env.configInput.multiplierPvpTvalueOverride then
 				PvpTvalue = env.configInput.multiplierPvpTvalueOverride/1000
 			else
-				if skillFlags.mine then
+				if skillModList:Sum("BASE", nil, "SkillTvalueOverride") > 0 then
+					PvpTvalue = skillModList:Sum("BASE", nil, "SkillTvalueOverride")/1000
+				elseif skillFlags.mine then
 					PvpTvalue = output.MineLayingTime*globalOutput.ActionSpeedMod
 				elseif skillFlags.trap then
 					PvpTvalue = output.TrapThrowingTime*globalOutput.ActionSpeedMod
