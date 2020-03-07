@@ -5,7 +5,7 @@
 --
 local t_insert = table.insert
 
-local CalcSectionClass = newClass("CalcSectionControl", "Control", "ControlHost", function(self, calcsTab, width, id, group, label, col, data, updateFunc)
+local CalcSectionClass = newClass("CalcSectionControl", "Control", "ControlHost", function(self, calcsTab, width, defaultCollapsed, id, group, label, col, data, updateFunc)
 	self.Control(calcsTab, 0, 0, width, 0)
 	self.ControlHost()
 	self.calcsTab = calcsTab
@@ -18,6 +18,7 @@ local CalcSectionClass = newClass("CalcSectionControl", "Control", "ControlHost"
 	self.flag = data.flag
 	self.notFlag = data.notFlag
 	self.updateFunc = updateFunc
+	self.collapsed = defaultCollapsed
 	for _, data in ipairs(self.data) do
 		for _, colData in ipairs(data) do
 			if colData.control then

@@ -43,7 +43,7 @@ local CalcsTabClass = newClass("CalcsTab", "UndoHandler", "ControlHost", "Contro
 	self.sectionList = { }
 
 	-- Special section for skill/mode selection
-	self:NewSection(3, "SkillSelect", 1, "View Skill Details", colorCodes.NORMAL, {
+	self:NewSection(3, false, "SkillSelect", 1, "View Skill Details", colorCodes.NORMAL, {
 		{ label = "Socket Group", { controlName = "mainSocketGroup", 
 			control = new("DropDownControl", nil, 0, 0, 300, 16, nil, function(index, value) 
 				self.input.skill_number = index 
