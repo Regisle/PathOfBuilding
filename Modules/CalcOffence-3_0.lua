@@ -2391,4 +2391,14 @@ function calcs.offence(env, actor, activeSkill)
 			t_insert(breakdown.ImpaleDPS, s_format("= %.1f", output.ImpaleDPS))
 		end
 	end
+	
+	-- charges
+	output.PowerChargesDuration = (100 + actor.modDB:Sum("BASE", nil, "PowerChargesDuration"))/10
+	output.FrenzyChargesDuration = (100 + actor.modDB:Sum("BASE", nil, "FrenzyChargesDuration"))/10
+	output.EnduranceChargesDuration = (100 + actor.modDB:Sum("BASE", nil, "EnduranceChargesDuration"))/10
+	output.PowerChargesOnKill = actor.modDB:Sum("BASE", nil, "PowerChargesOnKill")
+	output.FrenzyChargesOnKill = actor.modDB:Sum("BASE", nil, "FrenzyChargesOnKill")
+	output.EnduranceChargesOnKill = actor.modDB:Sum("BASE", nil, "EnduranceChargesOnKill")
+	output.FrenzyChargesOnHit = actor.modDB:Sum("BASE", nil, "FrenzyChargesOnHit")
+	output.EnduranceChargesWhenHit = actor.modDB:Sum("BASE", nil, "EnduranceChargesWhenHit")
 end

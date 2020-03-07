@@ -889,6 +889,16 @@ return {
 	{ label = "Inc. Item Quantity", { format = "{0:mod:1}%", { modName = "LootQuantity", modType = "INC", cfg = "skill" }, }, },
 	{ label = "Inc. Item Rarity", { format = "{0:mod:1}%", { modName = "LootRarity", modType = "INC", cfg = "skill" }, }, },
 } },
+{ 1, "Charges", 1, "Charges", colorCodes.OFFENCE, {
+	{ label = "Power Duration", { format = "{0:output:PowerChargesDuration}", { modName = "PowerChargesDuration" }, }, },
+	{ label = "Frenzy Duration", { format = "{0:output:FrenzyChargesDuration}", { modName = "FrenzyChargesDuration" }, }, },
+	{ label = "Endurance Dur.", { format = "{0:output:EnduranceChargesDuration}", { modName = "EnduranceChargesDuration" }, }, },
+	{ label = "Power kill", { format = "{0:output:PowerChargesOnKill}%", { modName = "PowerChargesOnKill" }, }, },
+	{ label = "Frenzy kill", { format = "{0:output:FrenzyChargesOnKill}%", { modName = "FrenzyChargesOnKill" }, }, },
+	{ label = "Endurance kill", { format = "{0:output:EnduranceChargesOnKill}%", { modName = "EnduranceChargesOnKill" }, }, },
+	{ label = "Frenzy on Hit", { format = "{0:output:FrenzyChargesOnHit}%", { modName = "FrenzyChargesOnHit" }, }, },
+	{ label = "Endurance when Hit", { format = "{0:output:EnduranceChargesWhenHit}%", { modName = "EnduranceChargesWhenHit" }, }, },
+} },
 { 1, "Attributes", 2, "Attributes", colorCodes.NORMAL, {
 	extra = colorCodes.STRENGTH.."{0:output:Str}^7, "..colorCodes.DEXTERITY.."{0:output:Dex}^7, "..colorCodes.INTELLIGENCE.."{0:output:Int}",
 	{ label = "Strength", { format = "{0:output:Str}", { breakdown = "Str" }, { modName = "Str" }, }, },
