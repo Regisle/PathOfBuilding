@@ -48,6 +48,10 @@ function calcs.armourReductionDouble(armour, damage, doubleChance)
 	return calcs.armourReduction(armour, damage) * (1 - doubleChance) + calcs.armourReduction(armour * 2, damage) * doubleChance
 end
 
+function calcs.reverseArmourReductionDouble(armour, effectivePool, doubleChance)
+	return 0
+end
+
 -- Performs all defensive calculations
 function calcs.defence(env, actor)
 	local modDB = actor.modDB
@@ -1013,7 +1017,27 @@ function calcs.defence(env, actor)
 	--maximum hit taken
 	--FIX X TAKEN AS Y (output[damageType.."TotalPool"] should use the damage types that are converted to in output[damageType.."TakenHitMult"])
 	for _, damageType in ipairs(dmgTypeList) do
-		output[damageType.."MaximumHitTaken"] = output[damageType.."TotalPool"] / output[damageType.."TakenHitMult"]
+		local maxhit = 2147483648
+		for _, destType in ipairs(dmgTypeList) do
+			if actor.damageShiftTable[damageType][destType] > 0 then
+				local poolMult = output[destType.."TotalPool"] * actor.damageShiftTable[damageType][destType] / output[destType.."TakenHit"]
+				--poolMult = poolMult - modDB:Sum("BASE", nil, "DamageTakenWhenHit", damageType.."DamageTakenWhenHit") -- add flat reduced damage taken
+				local resist = modDB:Flag(nil, "SelfIgnore"..destType.."Resistance") and 0 or output[destType.."ResistWhenHit"] or output[destType.."Resist"]
+				if destType == "Physical" or modDB:Flag(nil, "ArmourAppliesTo"..destType.."DamageTaken") then
+					local armourReduct = calcs.reverseArmourReductionDouble(output.Armour, poolMult, doubleArmourChance)
+					if destType == "Physical" then
+						if not modDB:Flag(nil, "ArmourDoesNotApplyToPhysicalDamageTaken") then
+							resist = m_min(output.DamageReductionMax, resist + armourReduct)
+						end
+					else
+						resist = resist + m_min(output.DamageReductionMax, armourReduct) * (1 - resist / 100)
+					end
+				end
+				poolMult = poolMult / (1 - resist / 100)
+				maxhit = m_min(maxhit, poolMult / actor.damageShiftTable[damageType][destType])
+			end
+		end
+		output[damageType.."MaximumHitTaken"] = maxhit
 		if breakdown then
 			breakdown[damageType.."MaximumHitTaken"] = {
 				s_format("Total Pool: %d", output[damageType.."TotalPool"]),
@@ -1036,8 +1060,8 @@ function calcs.defence(env, actor)
 		--total EHP
 		for _, damageType in ipairs(dmgTypeList) do
 			local convertedAvoidance = 0
-			for _, damageConvertedType in ipairs(dmgTypeList) do
-				convertedAvoidance = convertedAvoidance + output[damageConvertedType..DamageType.."DamageChance"] * actor.damageShiftTable[damageType][damageConvertedType] / 100
+			for _, destType in ipairs(dmgTypeList) do
+				convertedAvoidance = convertedAvoidance + output[destType..DamageType.."DamageChance"] * actor.damageShiftTable[damageType][destType] / 100
 			end
 			output[damageType.."TotalEHP"] = output[damageType.."MaximumHitTaken"] / (1 - output[DamageType.."NotHitChance"] / 100) / (1 - convertedAvoidance / 100)
 			if minimumEHPMode ~= "NONE" then
@@ -1059,8 +1083,8 @@ function calcs.defence(env, actor)
 	if minimumEHPMode ~= "NONE" then
 		for _, damageType in ipairs(dmgTypeList) do
 			local convertedAvoidance = 0
-			for _, damageConvertedType in ipairs(dmgTypeList) do
-				convertedAvoidance = convertedAvoidance + output[damageConvertedType..minimumEHPMode.."DamageChance"] * actor.damageShiftTable[damageType][damageConvertedType] / 100
+			for _, destType in ipairs(dmgTypeList) do
+				convertedAvoidance = convertedAvoidance + output[destType..minimumEHPMode.."DamageChance"] * actor.damageShiftTable[damageType][destType] / 100
 			end
 			output[damageType.."TotalEHP"] = output[damageType.."MaximumHitTaken"] / (1 - output[minimumEHPMode.."NotHitChance"] / 100) / (1 - convertedAvoidance / 100)
 			if breakdown then
