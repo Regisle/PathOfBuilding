@@ -1017,10 +1017,24 @@ function calcs.defence(env, actor)
 	--maximum hit taken
 	--FIX X TAKEN AS Y (output[damageType.."TotalPool"] should use the damage types that are converted to in output[damageType.."TakenHitMult"])
 	for _, damageType in ipairs(dmgTypeList) do
-		local maxhit = 2147483648
+		if breakdown then
+			breakdown[damageType.."MaximumHitTaken"] = { 
+				label = "Hit Damage taken as",
+				rowList = { },
+				colList = {
+					{ label = "Type", key = "type" },
+					{ label = "Effective Pool", key = "pool" },
+					{ label = "Taken", key = "taken" },
+					{ label = "Mitigation", key = "resist" },
+					{ label = "Final", key = "final" },
+				},
+			}
+		end
+		local maxhit = 0
 		for _, destType in ipairs(dmgTypeList) do
-			if actor.damageShiftTable[damageType][destType] > 0 then
-				local poolMult = output[destType.."TotalPool"] * actor.damageShiftTable[damageType][destType] / output[destType.."TakenHit"]
+			local portion = actor.damageShiftTable[damageType][destType] / 100
+			if portion > 0 then
+				local poolMult = output[destType.."TotalPool"] * portion / output[destType.."TakenHit"]
 				--poolMult = poolMult - modDB:Sum("BASE", nil, "DamageTakenWhenHit", damageType.."DamageTakenWhenHit") -- add flat reduced damage taken
 				local resist = modDB:Flag(nil, "SelfIgnore"..destType.."Resistance") and 0 or output[destType.."ResistWhenHit"] or output[destType.."Resist"]
 				if destType == "Physical" or modDB:Flag(nil, "ArmourAppliesTo"..destType.."DamageTaken") then
@@ -1034,16 +1048,21 @@ function calcs.defence(env, actor)
 					end
 				end
 				poolMult = poolMult / (1 - resist / 100)
-				maxhit = m_min(maxhit, poolMult * 100 / actor.damageShiftTable[damageType][destType])
+				--maxhit = m_min(maxhit, poolMult / portion)
+				maxhit = maxhit + poolMult
+				if breakdown then
+					t_insert(breakdown[damageType.."MaximumHitTaken"].rowList, {
+						type = s_format("%d%% as %s", portion * 100, destType),
+						pool = s_format("%d from %d", output[destType.."TotalPool"] * portion, output[destType.."TotalPool"]),
+						taken = output[destType.."TakenHit"] ~= 1 and s_format("x %.2f", output[destType.."TakenHit"]),
+						resist = s_format("x %.2f", 1 - resist / 100),
+						final = s_format("x %.2f", poolMult),
+					})
+				end
 			end
 		end
 		output[damageType.."MaximumHitTaken"] = maxhit
 		if breakdown then
-			breakdown[damageType.."MaximumHitTaken"] = {
-				s_format("Total Pool: %d", output[damageType.."TotalPool"]),
-				s_format("Damage Taken modifier: %.2f", output[damageType.."TakenHitMult"]),
-				s_format("Maximum hit you can take: %d", output[damageType.."MaximumHitTaken"]),
-			}
 		end
 	end
 
