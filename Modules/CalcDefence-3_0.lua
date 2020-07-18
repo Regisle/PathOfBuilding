@@ -1034,7 +1034,7 @@ function calcs.defence(env, actor)
 					end
 				end
 				poolMult = poolMult / (1 - resist / 100)
-				maxhit = m_min(maxhit, poolMult / actor.damageShiftTable[damageType][destType])
+				maxhit = m_min(maxhit, poolMult * 100 / actor.damageShiftTable[damageType][destType])
 			end
 		end
 		output[damageType.."MaximumHitTaken"] = maxhit
