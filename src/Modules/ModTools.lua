@@ -72,13 +72,57 @@ function modLib.parseTags(line)
 end
 
 function modLib.parseFormattedSourceMod(line)
-	local modStrings = {}
+	local modStrings = { }
+	local arrays = { }
+	if line:match("%[") then
+		for line2 in line:gmatch(("%[(.-)%]")) do
+			t_insert(arrays, line2)
+		end
+		for i, line2 in ipairs(arrays) do
+			line = line:gsub("%["..line2:gsub("%|", "%%%|"):gsub("%-", "%%%-").."%]", "ARRAY"..i)
+		end
+	end
+	if line:match("%{") then
+		for line2 in line:gmatch(("%{(.-)%}")) do
+			t_insert(arrays, line2)
+		end
+		for i, line2 in ipairs(arrays) do
+			line = line:gsub("{"..line2.."}", "ARRAY"..i)
+		end
+	end
 	for line2 in line:gmatch("([^|]*)|?") do
 		t_insert(modStrings, line2)
 	end
 	if #modStrings >= 4 then
+		local value = modStrings[1]:match("ARRAY") and modStrings[1] or nil 
+		if value then
+			local index = modStrings[1]:gsub("ARRAY", "")
+			value = arrays[tonumber(index)]
+			if value:match("mod=ARRAY") then
+				local index = value:gsub("mod=ARRAY", "")
+				value = arrays[tonumber(index)] 
+				local subModStrings = {}
+				subModStrings[1] = value:match("(.-) = ")
+				value = value:gsub(subModStrings[1].." = ","")
+				for line2 in value:gmatch("([^|]*)|?") do
+					t_insert(subModStrings, line2)
+				end
+				value = { mod = {
+					value = (subModStrings[1] == "true" and true) or tonumber(subModStrings[1]) or 0,
+					name = subModStrings[2],
+					type = subModStrings[3],
+					flags = ModFlag[subModStrings[4]] or 0,
+					keywordFlags = KeywordFlag[subModStrings[5]] or 0,
+				} }
+				for _, tag in ipairs(modLib.parseTags(subModStrings[7])) do
+					t_insert(value.mod, tag)
+				end
+			end
+		else
+			value = (modStrings[1] == "true" and true) or tonumber(modStrings[1]) or 0
+		end
 		local mod = {
-			value = (modStrings[1] == "true" and true) or tonumber(modStrings[1]) or 0,
+			value = value,
 			source = modStrings[2],
 			name = modStrings[3],
 			type = modStrings[4],
