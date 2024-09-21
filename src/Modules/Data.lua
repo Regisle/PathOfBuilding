@@ -548,6 +548,13 @@ data.itemMods = {
 	JewelCluster = LoadModule("Data/ModJewelCluster"),
 	JewelCharm = LoadModule("Data/ModJewelCharm"),
 }
+do
+	-- This is for files larger than constant count
+	local Item = LoadModule("Data/ModItem_part2")
+	for k, v in pairs(Item) do
+		data.itemMods.Item[k] = v
+	end
+end
 data.masterMods = LoadModule("Data/ModMaster")
 data.enchantments = {
 	["Helmet"] = LoadModule("Data/EnchantmentHelmet"),
