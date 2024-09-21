@@ -298,10 +298,6 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 	self.rawLines = { }
 	-- Find non-blank lines and trim whitespace
 	for line in raw:gmatch("%s*([^\n]*%S)") do
-		if line:match("^{ ") then
-			main:OpenMessagePopup("Error", "\"Advanced Item Description\" (Ctrl+Alt+c) is currently unsupported.\nPlease try again using Ctrl+c only.")
-			return
-		end
 		t_insert(self.rawLines, line)
 	end
 	local mode = rarity and "GAME" or "WIKI"
@@ -393,6 +389,22 @@ function ItemClass:ParseRaw(raw, rarity, highQuality)
 			self[influenceItemMap[line]] = true
 		elseif line == "Requirements:" then
 			-- nothing to do
+		elseif line:match("^{ .*}") and self.rawLines[l+1] then
+			-- advanced item copy paste
+			local l2 = l + 1
+			while self.rawLines[l2] and not self.rawLines[l2]:match("^{ .*}") and not (self.rawLines[l2] == "--------") do
+				if self.rawLines[l2]:match("^%(.*%)") then
+					self.rawLines[l2] = ""
+				else
+					self.rawLines[l2] = self.rawLines[l2]:gsub(" — Unscalable Value", ""):gsub(" %- Unscalable Value", "")
+					local val, range = self.rawLines[l2]:gsub("%-","%%%-"):match("(.*)%((.*)%)[ %%]")
+					while range do
+						self.rawLines[l2] = self.rawLines[l2]:gsub("%("..range.."%)","")
+						val, range = self.rawLines[l2]:gsub("%-","%%%-"):match("(.*)%((.*)%)[ %%]")
+					end
+				end
+				l2 = l2 + 1
+			end
 		else
 			if self.checkSection then
 				if gameModeStage == "IMPLICIT" then
